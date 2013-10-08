@@ -1,0 +1,1 @@
+This is the online version which will pull from the actual website and parse the file. I think this version will be slower than the other version I decided to do which uses dump of the dictionary entries as the data. The online version will be able to give more information like etymology and synonyms. This was the original way I wanted to make this application.
