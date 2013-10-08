@@ -1,0 +1,23 @@
+/* This document describes the structure of a wiktionary dictionary entry. The easiest file to use (from my research) is "https://en.wiktionary.org/w/index.php?action=raw&title=<word-to-be-defined>".
+*/
+
+#####################################
+
+
+==English==
+//The first level of separation is the language. Most words will only have an English form. Notice the double equal signs.
+
+===Etymology===
+//The next few blocks are under the English section and have three equal signs. It seems like the equal signs denote levels of separations. Etymology is one subsection which will be parsed.
+
+===Pronunciation===
+//I could use this, though pronunciation terms are kind of cryptic and so it might not be impactful for studying. Plus I should know how to say most of these words (of course it's the words you aren't sure about which you need it for).
+
+===<part-of-speech>===
+//All parts of speech have three equal signs. Each one will be included for parsing. This includes nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, interjections. Each one will be parsed by their respective class. I am not sure if example sentences will be included.
+
+====Synonyms====
+//This section is useful for learning and so will be included in the parser. Most subsections like this one have four equal signs which I think means they are less significant/superfluous for an actual dictionary entry.
+
+====<everything-else>====
+//These won't be included in the parser.
