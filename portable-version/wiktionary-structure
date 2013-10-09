@@ -1,0 +1,23 @@
+/*This file demonstrates how the dictionary entries are organized. The file to be read by the application is a tab separated value file (.tsv). This means all the information is delimited by tabs and new lines. English precedes every word because they are the English version of the word. "toolserver.org/~enwikt/definitions/" provides both an all language and a just English list of entries. I decided to take the latter because it is simpler. The file displays multiple definitions of words by placing the next definition on the following line in the same format as the previous line. An example of this is below.
+*/
+
+#########################
+
+format:
+English \t <word> \t <part-of-speech> \t # <definition>
+
+
+multiple definition example:
+
+English	bat	noun	# Any of the small, [[nocturnal]], flying [[mammal]]s of the order [[chiroptera]], which navigate by means of [[echolocation]]. They look like a mouse with membranous wings extending from the forelimbs to the hind limbs or tail. Altogether, there are about 1000 bat species in the world.
+English	bat	noun	# {{context|offensive|lang=en}} An old woman.
+English	bat	noun	# {{context|1811|lang=en}} A [[whore]] who prowls in the dusk/evening like a bat.
+.
+.
+.
+English	bat	verb	# {{context|intransitive|lang=en}} to hit with a bat.
+.
+.
+.
+
+//The definition is preceded with a hash. The part of speech, word and language are addressed in each line regardless of the word before it. The definition has some syntax which is specific to wiktionary. Double brackets are used for links and double braces for explanations.
