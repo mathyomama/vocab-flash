@@ -1,5 +1,6 @@
 import parser
 import StringIO
+import re
 
 
 class Heading(object):
