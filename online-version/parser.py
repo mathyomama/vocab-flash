@@ -11,7 +11,7 @@ class Parse(object):
 			"English"
 			]
 
-	part-of-speeches = [
+	part_of_speeches = [
 			"Noun",
 			"Verb",
 			"Adjective",
@@ -38,7 +38,7 @@ class Parse(object):
 			"languages":languages,
 			"pronunciation":pronunciation,
 			"etymology":etymology,
-			"part-of-speech":part-of-speech
+			"part-of-speech":part_of_speeches,
 			"synonyms":synonyms
 			}
 
