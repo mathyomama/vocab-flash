@@ -126,6 +126,8 @@ class PartOfSpeech(Section):
 		super(PartOfSpeech, self).__init__(heading, information)
 	
 	def format_information(self, information):
+		def linkrepl(match):
+			pass
 		formatted_string = ""
 		lines = information.split("\n")
 		#legit_definition = re.compile(r"^#")
