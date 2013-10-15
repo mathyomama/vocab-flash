@@ -33,6 +33,7 @@ class Parser(object):
 		self.data = data
 		self.sections = self.split(self.data)
 		self.list_of_section_objects = self.classify(self.sections)
+		self.entry = self.make_entry(self.list_of_section_objects)
 
 	def split(self, data):
 		"""This takes the file-like object and splits the data into a dictionary with the headings as keys and information as values."""
@@ -48,7 +49,7 @@ class Parser(object):
 				information += line
 				continue
 			else:
-				self.sections.append((heading, information))
+				sections.append((heading, information))
 				heading = result.group().strip('=')
 				information = ""
 		return sections
@@ -59,9 +60,18 @@ class Parser(object):
 		for section in sections:
 			#Each element of section is a tuple with heading and unformatted information as the pair
 			stripped_heading = section[0].rstrip(' 0123456789')
-			if stripped_heading in useful_headings:
+			if stripped_heading in self.useful_headings:
 				list_of_section_objects.append(eval("%s(section[0], section[1])" % stripped_heading))
 		return list_of_section_objects
+
+	def make_entry(self, list_of_section_objects):
+		entry = ''
+		for sect in list_of_section_objects:
+			entry += sect.get_section()
+		return entry
+
+	def get_entry(self):
+		return self.entry
 	
 	def get_data(self):
 		return self.data
@@ -95,19 +105,15 @@ class Section(object):
 		link = re.compile(r"\[\[(?P<word>\w.*?)\]\]")
 		for line in lines:
 			formatted_line = link.sub("\g<word>", line)
-			if formatted_string == '':
-				formatted_string = str().join((formatted_string, formatted_iine))
-			else:
-				formatted_string = str().join((formatted_string, '\n', formatted_line))
+			formatted_string = str().join((formatted_string, formatted_line, '\n'))
 		return formatted_string
 			
 	
 	def get_formatted_information(self):
 		return self.format_information(self.information)
 
-	def print_section(self):
-		print self.get_heading()
-		print self.get_formatted_information()
+	def get_section(self):
+		return self.get_heading() + "\n" + self.get_formatted_information()
 
 
 class Language(Section):
@@ -155,19 +161,17 @@ class PartOfSpeech(Section):
 		lines = string.split("\n")
 		legit_definition = re.compile(r"^# ")
 		#not_definition = re.compile(r"^#[*:]")
-		context = re.compile(r"{context\|(?P<con>.*?)\|lang=\w*}")
+		context = re.compile(r"{{(context|cx)\|(?P<con>.*?)\|lang=\w*?}}")
 		definition_count = 0
 		for line in lines:
 			formatted_line = ''
 			if legit_definition.match(line) != None:
-				formatted_line = context.sub("\g<con>", line.lstrip("#"))
+				formatted_line = context.sub("(\g<con>)", line.lstrip("#"))
 				definition_count += 1
 			else:
 				continue
-			if formatted_string == '':
-				formatted_string = str().join((formatted_string, "%d" % definition_count, formatted_line))
-			else:
-				formatted_string = str().joint ((formatted_string, '\n', "%d" % definition_count, formatted_line))
+			formatted_string = str().join((formatted_string, "%d" % definition_count, formatted_line, '\n'))
+		formatted_string += "\n\n"
 		return formatted_string
 
 

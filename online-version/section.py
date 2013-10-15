@@ -1,5 +1,4 @@
 import parser
-import StringIO
 import re
 
 
@@ -32,13 +31,15 @@ class Language(Section):
 class Pronunciation(Section):
 	"""This subclass handles the sections labeled pronunciation"""
 
-	pass
+	def __init__(self, heading, information):
+		super(Pronunciation, self).__init__(heading, information)
 
 
 class Etymology(Section):
 	"""This subclass handles the etymology sections"""
 
-	pass
+	def __init__(self, heading, information):
+		super(Etymology, self).__init__(heading, information)
 
 
 class PartOfSpeech(Section):
@@ -110,4 +111,5 @@ class Interjection(PartOfSpeech):
 class Synonyms(Section):
 	"""Handles synonyms"""
 
-	pass
+	def __init__(self, heading, information):
+		super(Synonyms, self).__init__(heading, information)
