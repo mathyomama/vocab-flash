@@ -20,3 +20,6 @@ class Definition(object):
 
 	def http_error_message(self):
 		print error.http_error
+
+	def print_entry(self):
+		self.entry.

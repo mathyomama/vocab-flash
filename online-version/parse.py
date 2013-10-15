@@ -86,9 +86,28 @@ class Section(object):
 	def get_information(self):
 		return self.information
 
+	def format_information(self, information):
+
+		#A function for the substitution function...Naaaawwwwwt. Don't need it. I thought I was going to be cool by putting a function in a function
+		string = information
+		formatted_string = ""
+		lines = string.split("\n")
+		link = re.compile(r"\[\[(?P<word>\w.*?)\]\]")
+		for line in lines:
+			formatted_line = link.sub("\g<word>", line)
+			if formatted_string == '':
+				formatted_string = str().join((formatted_string, formatted_iine))
+			else:
+				formatted_string = str().join((formatted_string, '\n', formatted_line))
+		return formatted_string
+			
+	
 	def get_formatted_information(self):
-		print "Defualt formatter"
-		return self.information
+		return self.format_information(self.information)
+
+	def print_section(self):
+		print self.get_heading()
+		print self.get_formatted_information()
 
 
 class Language(Section):
@@ -126,19 +145,30 @@ class PartOfSpeech(Section):
 		super(PartOfSpeech, self).__init__(heading, information)
 	
 	def format_information(self, information):
-		def linkrepl(match):
-			pass
-		formatted_string = ""
-		lines = information.split("\n")
-		#legit_definition = re.compile(r"^#")
-		not_definition = re.compile(r"^#*")
+		"""This method removes the curly braces which look like {context|<word>|lang=<lang.>}"""
+
+		#A function for replacing context braces...Not, realized it wasn't necessary with capturing groups
+		string = information
+		#Using the parent method to remove the links from the string
+		string = super(PartOfSpeech, self).format_information(string)
+		formatted_string = ''
+		lines = string.split("\n")
+		legit_definition = re.compile(r"^# ")
+		#not_definition = re.compile(r"^#[*:]")
+		context = re.compile(r"{context\|(?P<con>.*?)\|lang=\w*}")
+		definition_count = 0
 		for line in lines:
-			if not_definition.match(line) == None:
+			formatted_line = ''
+			if legit_definition.match(line) != None:
+				formatted_line = context.sub("\g<con>", line.lstrip("#"))
+				definition_count += 1
+			else:
 				continue
-
-
-	def get_formatted_information(self):
-		return format_information(self.information)
+			if formatted_string == '':
+				formatted_string = str().join((formatted_string, "%d" % definition_count, formatted_line))
+			else:
+				formatted_string = str().joint ((formatted_string, '\n', "%d" % definition_count, formatted_line))
+		return formatted_string
 
 
 class Noun(PartOfSpeech):
