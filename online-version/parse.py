@@ -139,9 +139,91 @@ class Pronunciation(Section):
 
 class Etymology(Section):
 	"""This subclass handles the etymology sections"""
+	
+	etyl_dict = {
+			"en":"English",
+			"enm":"Middle English",
+			"ang":"Old English",
+			"nl":"Dutch",
+			"de":"German",
+			"da":"Danish",
+			"sv":"Swedish",
+			"fo":"Faroese",
+			"is":"Icelandic",
+			"my":"Burmese",
+			"fi":"Finnish",
+			"cmn":"Mandarin Chinese",
+			"grc":"Greek",
+			"la":"Latin",
+			"sa":"Sanskrit",
+			"fr":"French",
+			"cs":"Czech",
+			"he":"Hebrew",
+			"it":"Italian",
+			"ja":"Japanese",
+			"pt":"Portuguese",
+			"ru":"Russian"
+			}
 
 	def __init__(self, heading, information):
 		super(Etymology, self).__init__(heading, information)
+	
+	def format_information(self, information):
+		"""This method will remove the curly braces from etymology"""
+	
+		def bracerepl(match):
+			header = match.group("header")
+			data = re.split(r'\|', match.group("data")) #This is a list
+			if header == "etyl":
+				return self.etyl_dict[data[0]]
+			elif header == "term":
+				string = ''
+				store = ''
+				for index, component in enumerate(data):
+					if "lang=" in component or "sc=" in component:
+						if store == '':
+							continue
+						else:
+							string += store
+					elif '=' in component:
+						string += "(" + component[component.find('=')+1:] + ")"
+					elif index == 0:
+						store = component
+					elif index == 1:
+						if component == '':
+							string += store
+						else:
+							string += component
+					elif index == 2:
+						string += "(\"" + component + "\")"
+					else:
+						string += component
+				return string
+			elif header == "term/t":
+				string = ''
+				for index, component in enumerate(data):
+					if index == 0:
+						continue
+					elif index == 1:
+						store = component
+					elif index == 2:
+						if component == '':
+							string += store
+						else:
+							string += component
+					else:
+						string += "(\"" + component + "\")"
+				return string
+			elif header == "l":
+				return data[1]
+			else:
+				return data
+
+		string = information
+		string = super(Etymology, self).format_information(string)
+		braces = re.compile(r"{{(?P<header>.*?)\|(?P<data>.*?)}}")
+		formatted_string = braces.sub(bracerepl, string)
+		return formatted_string
 
 
 class PartOfSpeech(Section):
